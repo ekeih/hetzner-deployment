@@ -30,6 +30,7 @@ public_root_key = ~/.ssh/root_key.pub
 7. Run the playbook. You need to specify the inventory hostname as an extra variable: `ansible-playbook deploy_debian_hetzner.yml -e 'target_host=server.example.com'`  
 **THIS WILL DELETE ALL DATA FROM YOUR SERVER WITHOUT ANY QUESTION**
 8. This will install Debian Jessie and wait for the server to be rebooted. In my tests it took about three minutes.
+9. Login to your server with the `root_key` SSH key.
 
 ## Disclaimer
 I do not work for Hetzner and this software is in no official way connected to Hetzner.
