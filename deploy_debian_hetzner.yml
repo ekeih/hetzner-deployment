@@ -1,0 +1,68 @@
+---
+
+- hosts: "{{ target_host }}"
+  any_errors_fatal: true
+  vars:
+    ansible_port: 22
+    ansible_ssh_private_key_file: "{{ deployment_key }}"
+    ansible_ssh_extra_args: "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    swap_size: "{{ (ansible_memtotal_mb * 0.5) | int }}"
+  tasks:
+  - name: copy ssh key
+    copy:
+      src: "{{ public_root_key }}"
+      dest: "/root/root_key.pub"
+    tags: core
+  - name: run installimage
+    command: >
+      /root/.oldroot/nfs/install/installimage \
+      -n {{ inventory_hostname }} \
+      -b grub \
+      -r yes \
+      -l 1 \
+      -p "/boot:ext4:1G,/:ext4:50G,swap:swap:{{ swap_size }}M,lvm:vm:all" \
+      -v "vm:dummy:/mnt:ext4:2G" \
+      -d "sda,sdb" \
+      -i /root/.oldroot/nfs/install/../images/Debian-86-jessie-64-minimal.tar.gz \
+      -K /root/root_key.pub \
+      -a
+    tags: core
+  - name: remove dummy lv
+    lvol:
+      vg: vm
+      lv: dummy
+      state: absent
+      force: yes
+    tags: core
+  - name: mount root file system
+    mount:
+      name: /mnt
+      src: /dev/md/1
+      state: mounted
+      fstype: ext4
+    tags: core
+  - name: remove dummy lv mount
+    mount:
+      fstab: /mnt/etc/fstab
+      name: /mnt
+      src: /dev/vm/dummy
+      state: absent
+    tags: core
+  - name: unmount root file system
+    mount:
+      name: /mnt
+      src: /dev/md/1
+      state: unmounted
+    tags: core
+  - name: reboot host
+    command: reboot
+    tags: core
+  - name: wait for host to be up again
+    delegate_to: localhost
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      port: 22
+      search_regex: OpenSSH
+      delay: 15
+      timeout: 900
+    tags: core
