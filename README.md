@@ -18,6 +18,9 @@ In its current state the playbook makes a lot of assumptions about your desired 
 
 To force the `installimage` script to create a volume group without any volumes the playbook creates a dummy volume and removes it after the installation is complete. Of course this is a bad way to do this but it works for now.
 
+## "But this playbook should be more flexible!?"
+Yes, you are right! In the current state it works for my personal use cases. If my requirements change in the future I will update the playbook accordingly. If you use this playbook and update it to make it more configurable then please open a pull request! :)
+
 ## How to use this playbook
 
 I assume that you already have a working ansible installation. For this example we use the following configuration.
