@@ -13,7 +13,7 @@ In its current state the playbook makes a lot of assumptions about your desired 
 4. All partitions are ext4.
 5. 1GB for */boot* (Yes that is a lot...)
 6. 50GB for */*
-7. A swap patition half as big as your RAM.
+7. A swap partition half as big as your RAM.
 8. The rest of the disks is configured as a LVM group with the name `vm`
 
 To force the `installimage` script to create a volume group without any volumes the playbook creates a dummy volume and removes it after the installation is complete. Of course this is a bad way to do this but it works for now.
