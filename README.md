@@ -1,6 +1,22 @@
 # ansible-hetzner-deployment
 
-This ansible playbook can be used to automize the deployment of [Hetzner servers](https://www.hetzner.de/) with Debian Jessie. It uses the installimage script that is provided by Hetzner inside of their rescue system.
+This ansible playbook can be used to automize the deployment of [Hetzner servers](https://www.hetzner.de/) with Debian Jessie. It uses the `installimage` script that is provided by Hetzner inside of their rescue system.
+
+## What does it do?
+Primary it calls the `installimage` script which you can find in a running rescue system of Hetzner. Usually you have to configure the script manually in an editor. This playbook answers all questions as parameters for a fully automated installation. It also reboots the server after the installation.
+
+In its current state the playbook makes a lot of assumptions about your desired configuration.
+
+1. The inventory hostname is used as the new hostname.
+2. grub is installed as bootloader.
+3. *sda* and *sdb* are configured as a level 1 software raid.
+4. All partitions are ext4.
+5. 1GB for */boot* (Yes that is a lot...)
+6. 50GB for */*
+7. A swap patition half as big as your RAM.
+8. The rest of the disks is configured as a LVM group with the name `vm`
+
+To force the `installimage` script to create a volume group without any volumes the playbook creates a dummy volume and removes it after the installation is complete. Of course this is a bad way to do this but it works for now.
 
 ## How to use this playbook
 
