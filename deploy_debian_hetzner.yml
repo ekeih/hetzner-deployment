@@ -42,10 +42,10 @@
       fstype: ext4
     tags: core
   - name: remove dummy lv mount
-    mount:
-      fstab: /mnt/etc/fstab
-      name: /mnt
-      src: /dev/vm/dummy
+    lineinfile:
+      backrefs: yes
+      dest: /mnt/etc/fstab
+      regexp: "^/dev/vm/dummy.*$"
       state: absent
     tags: core
   - name: unmount root file system
