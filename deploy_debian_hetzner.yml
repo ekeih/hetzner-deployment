@@ -48,6 +48,13 @@
       regexp: "^/dev/vm/dummy.*$"
       state: absent
     tags: core
+  - name: configure ssh port
+    lineinfile:
+      backrefs: yes
+      dest: /mnt/etc/ssh/sshd_config
+      line: "Port {{ ssh_port | default(22) }}"
+      regexp: "Port .*"
+    tags: core
   - name: unmount root file system
     mount:
       name: /mnt
@@ -61,7 +68,7 @@
     delegate_to: localhost
     wait_for:
       host: "{{ inventory_hostname }}"
-      port: 22
+      port: "{{ ssh_port | default(22) }}"
       search_regex: OpenSSH
       delay: 15
       timeout: 900
