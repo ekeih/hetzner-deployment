@@ -24,7 +24,7 @@
       -p "/boot:ext4:1G,/:ext4:50G,swap:swap:{{ swap_size }}M,lvm:vm:all" \
       -v "vm:dummy:/mnt:ext4:2G" \
       -d "sda,sdb" \
-      -i /root/.oldroot/nfs/install/../images/Debian-86-jessie-64-minimal.tar.gz \
+      -i /root/.oldroot/nfs/install/../images/Debian-87-jessie-64-minimal.tar.gz \
       -K /root/root_key.pub \
       -a
     tags: core
