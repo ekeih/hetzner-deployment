@@ -74,3 +74,13 @@
       delay: 15
       timeout: 900
     tags: core
+
+- hosts: "{{ target_host }}"
+  any_errors_fatal: true
+  gather_facts: false
+  vars:
+    ansible_user: root
+    ansible_port: 22
+  tasks:
+    - name: install python2
+      raw: test -e /usr/bin/python2 || (apt-get -y update && apt-get -y install python2.7-minimal)
