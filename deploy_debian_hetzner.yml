@@ -81,6 +81,7 @@
   vars:
     ansible_user: root
     ansible_port: 22
+    ansible_ssh_extra_args: "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
   tasks:
     - name: install python2
       raw: test -e /usr/bin/python2 || (apt-get -y update && apt-get -y install python2.7-minimal)
