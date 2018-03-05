@@ -33,7 +33,7 @@
         vg: vm
         lv: dummy
         state: absent
-        force: yes
+        force: true
       tags: core
     - name: mount root file system
       mount:
@@ -44,14 +44,14 @@
       tags: core
     - name: remove dummy lv mount
       lineinfile:
-        backrefs: yes
+        backrefs: true
         dest: /mnt/etc/fstab
         regexp: "^/dev/vm/dummy.*$"
         state: absent
       tags: core
     - name: configure ssh port
       lineinfile:
-        backrefs: yes
+        backrefs: true
         dest: /mnt/etc/ssh/sshd_config
         line: "Port {{ ssh_port | default(22) }}"
         regexp: "Port .*"
